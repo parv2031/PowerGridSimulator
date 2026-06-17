@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/PowerGridSimulator.dir/src/main.cpp.o -o PowerGridSimulator  -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 

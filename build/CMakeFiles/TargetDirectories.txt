@@ -1,0 +1,3 @@
+/home/parv/Projects/PowerGridSimulator/build/CMakeFiles/PowerGridSimulator.dir
+/home/parv/Projects/PowerGridSimulator/build/CMakeFiles/edit_cache.dir
+/home/parv/Projects/PowerGridSimulator/build/CMakeFiles/rebuild_cache.dir
