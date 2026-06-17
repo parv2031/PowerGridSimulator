@@ -105,8 +105,10 @@ void run_simulation(){
     inputStrings[6] = "80";
 
     Rectangle startButton;
+    Rectangle exitButton;
     bool showCursor = false;
     int framesCounter = 0;
+    bool shouldExit = false;
 
     // Layout for input screen
     int startY = 100;
@@ -121,6 +123,7 @@ void run_simulation(){
         textBoxes[i] = {(float)screenWidth / 2 - inputWidth / 2, (float)startY + i * (inputHeight + padding), (float)inputWidth, (float)inputHeight};
     }
     startButton = {(float)screenWidth / 2 - inputWidth / 2, (float)startY + inputFieldCount * (inputHeight + padding) + 20, (float)inputWidth, (float)inputHeight + 10};
+    exitButton = {(float)screenWidth / 2 - inputWidth / 2, (float)startY + inputFieldCount * (inputHeight + padding) + 80, (float)inputWidth, (float)inputHeight + 10};
 
     // --- 4. Variables for STATE_VISUALIZATION ---
     graph G; // Create graph object
@@ -199,6 +202,12 @@ void run_simulation(){
                         inputStrings[activeTextBox].pop_back();
                     }
                 }
+            }
+
+            // Check Exit Button Click
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), exitButton))
+            {
+                shouldExit = true;
             }
 
             // Check Start Button Click
@@ -288,6 +297,11 @@ void run_simulation(){
             // Draw Start Button
             DrawRectangleRec(startButton, MAROON);
             DrawText("START SIMULATION", startButton.x + startButton.width / 2 - MeasureText("START SIMULATION", fontSize) / 2, startButton.y + (startButton.height - fontSize) / 2, fontSize, WHITE);
+
+            // Draw Exit Button
+            DrawRectangleRec(exitButton, DARKGRAY);
+            DrawRectangleLinesEx(exitButton, 2, RED);
+            DrawText("EXIT", exitButton.x + exitButton.width / 2 - MeasureText("EXIT", fontSize) / 2, exitButton.y + (exitButton.height - fontSize) / 2, fontSize, RED);
 
             EndDrawing();
         }
@@ -423,7 +437,15 @@ void run_simulation(){
             if (IsKeyPressed(KEY_BACKSPACE))
             {
                 G = graph();                // Clear graph
+                selected_a_node = nullptr;
+                selected_b_node = nullptr;
+                selected_edge = nullptr;
+                a_nodes_to_draw.clear();
+                b_nodes_to_draw.clear();
+                visited_nodes.clear();
+                fix_viz_state = VIZ_IDLE;
                 currentState = STATE_INPUT; // Go back to input screen
+                continue;                   // Skip the rest of the visualization frame
             }
             // --- Update selection state ---
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -843,6 +865,10 @@ void run_simulation(){
             EndDrawing();
         }
         break;
+        }
+
+        if (shouldExit) {
+            break;
         }
     }
 
